@@ -7,7 +7,7 @@ spring:
     gateway:
       routes:
         - id: saga-orchestrator
-          uri: http://localhost:8080
+          uri: http://localhost:8089
           predicates:
             - Path=/saga/**
         - id: order-service

@@ -1,4 +1,4 @@
-package org.example.orchestrator.model;
+package org.example.discount.model;
 
 import lombok.Data;
 

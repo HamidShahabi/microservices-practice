@@ -1,5 +1,6 @@
 package org.example.order.controller;
 
+import org.example.kafka.dto.OrderRequestDto;
 import org.example.order.entity.Order;
 import org.example.order.service.OrderService;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,7 @@ public class OrderController {
     }
 
     @PostMapping
-    public Order createOrder(@RequestBody Order order) {
+    public Order createOrder(@RequestBody OrderRequestDto order) {
         return service.createOrder(order);
     }
 

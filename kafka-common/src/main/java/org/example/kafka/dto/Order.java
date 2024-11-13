@@ -1,4 +1,4 @@
-package org.example.orchestrator.model;
+package org.example.kafka.dto;
 
 import lombok.Data;
 

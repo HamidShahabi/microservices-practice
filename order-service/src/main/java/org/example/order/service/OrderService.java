@@ -1,6 +1,7 @@
 package org.example.order.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.example.kafka.dto.OrderRequestDto;
 import org.example.order.entity.Order;
 import org.example.order.repository.OrderRepository;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -37,14 +38,17 @@ public class OrderService {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public Order createOrder(Order order) {
+    public Order createOrder(OrderRequestDto orderRequestDto) {
+        Order order = new Order();
         order.setId(UUID.randomUUID().toString());
         order.setStatus("PENDING");
+        order.setQuantity(orderRequestDto.getQuantity());
+        order.setDiscountCode(orderRequestDto.getDiscountCode());
+        order.setTransactionId(orderRequestDto.getTransactionId());
         Order savedOrder = repository.save(order);
-
         String message = "Order created: " + savedOrder.getId();
-        log.info("Publishing to Kafka: {}", message);
-        kafkaTemplate.send("order-topic", "Order created: " + savedOrder.getId());
+//        log.info("Publishing to Kafka: {}", message);
+//        kafkaTemplate.send("order-topic", "Order created: " + savedOrder.getId());
         return savedOrder;
     }
 
@@ -55,8 +59,8 @@ public class OrderService {
         repository.save(order);
 
         String message = "Order updated: " + orderId + " to status " + status;
-        log.info("Publishing to Kafka: {}", message);
-        kafkaTemplate.send("order-topic", message);
+//        log.info("Publishing to Kafka: {}", message);
+//        kafkaTemplate.send("order-topic", message);
     }
     public Order getOrderById(String orderId) {
         return repository.findById(orderId)

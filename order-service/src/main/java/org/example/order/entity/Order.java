@@ -17,4 +17,5 @@ public class Order {
     private String status; // PENDING, COMPLETED, FAILED
     private String discountCode;
     private double finalAmount;
+    private String transactionId;
 }

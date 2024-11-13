@@ -14,11 +14,16 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+#  kafka:
+#    bootstrap-servers: localhost:9092
+#    producer:
+#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      value-serializer: org.apache.kafka.common.serialization.StringSerializer
   kafka:
-    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: order-service-group
     producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: all
 
   h2:
     console:
@@ -27,3 +32,4 @@ spring:
 logging:
   level:
     org.springframework: INFO
+    org.springframework.kafka: INFO

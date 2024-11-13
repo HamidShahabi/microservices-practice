@@ -1,9 +1,11 @@
 
 package org.example.orchestrator.controller;
 
+import org.example.kafka.dto.OrderRequestDto;
 import org.example.orchestrator.model.Order;
 import org.example.orchestrator.model.SagaResponse;
-import org.example.orchestrator.service.SagaOrchestratorService;
+import org.example.orchestrator.service.SagaOrchestratorServiceAsync;
+import org.example.orchestrator.service.SagaOrchestratorServiceSync;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,15 +13,15 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/saga")
 public class SagaController {
 
-    private final SagaOrchestratorService orchestratorService;
+    private final SagaOrchestratorServiceAsync orchestratorService;
 
-    public SagaController(SagaOrchestratorService orchestratorService) {
+    public SagaController(SagaOrchestratorServiceAsync orchestratorService) {
         this.orchestratorService = orchestratorService;
     }
 
     @PostMapping("/orders")
-    public ResponseEntity<SagaResponse> createOrder(@RequestBody Order order) {
-        SagaResponse response = orchestratorService.createOrderSaga(order);
+    public ResponseEntity<String> createOrder(@RequestBody OrderRequestDto order) {
+        String response = orchestratorService.initiateOrderSaga(order);
         return ResponseEntity.ok(response);
     }
 }
