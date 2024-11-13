@@ -1,0 +1,29 @@
+# order-service/src/main/resources/application.yml
+server:
+  port: 8081
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/hibernateDemoDB
+    username: postgres
+    password: hamidreza80
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+  h2:
+    console:
+      enabled: false
+
+logging:
+  level:
+    org.springframework: INFO

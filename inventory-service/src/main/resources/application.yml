@@ -1,0 +1,23 @@
+# inventory-service/src/main/resources/application.yml
+server:
+  port: 8083
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/hibernateDemoDB
+    username: postgres
+    password: hamidreza80
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  h2:
+    console:
+      enabled: false
+
+logging:
+  level:
+    org.springframework: INFO

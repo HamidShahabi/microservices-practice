@@ -1,0 +1,12 @@
+# saga-orchestrator/src/main/resources/application.yml
+server:
+  port: 8080
+
+spring:
+  application:
+    name: saga-orchestrator
+
+logging:
+  level:
+    org.springframework.cloud.openfeign: DEBUG
+    org.example.orchestrator: DEBUG
