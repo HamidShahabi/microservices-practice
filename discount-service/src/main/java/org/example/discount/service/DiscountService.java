@@ -1,36 +1,46 @@
 package org.example.discount.service;
 
-import org.example.discount.entity.Discount;
-import org.example.discount.repository.DiscountRepository;
 import org.springframework.stereotype.Service;
+import org.example.discount.model.Discount;
+import org.example.discount.repository.DiscountRepository;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Service
 public class DiscountService {
+    private final DiscountRepository discountRepository;
 
-    private final DiscountRepository repository;
-
-    public DiscountService(DiscountRepository repository) {
-        this.repository = repository;
+    public DiscountService(DiscountRepository discountRepository){
+        this.discountRepository = discountRepository;
     }
 
-    public Discount getDiscount(String discountCode) {
-        return repository.findById(discountCode)
-                .orElseThrow(() -> new RuntimeException("Discount not found"));
+    public Flux<Discount> getAllDiscounts(){
+        return discountRepository.findAll();
     }
 
-    public boolean isDiscountActive(String discountCode) {
-        Discount discount = getDiscount(discountCode);
-        return discount.isActive();
+    public Mono<Discount> getDiscountById(Long id){
+        return discountRepository.findById(id);
     }
 
-    public Discount addDiscount(Discount discount) {
-        return repository.save(discount);
+    public Mono<Discount> getDiscountByCode(String code){
+        return discountRepository.findByCode(code);
     }
 
-    public void deactivateDiscount(String discountCode) {
-        Discount discount = getDiscount(discountCode);
-        discount.setActive(false);
-        repository.save(discount);
+    public Mono<Discount> createDiscount(Discount discount){
+        return discountRepository.save(discount);
+    }
+
+    public Mono<Discount> updateDiscount(Long id, Discount discount){
+        return discountRepository.findById(id)
+                .flatMap(existingDiscount -> {
+                    existingDiscount.setCode(discount.getCode());
+                    existingDiscount.setPercentage(discount.getPercentage());
+                    existingDiscount.setDescription(discount.getDescription());
+                    return discountRepository.save(existingDiscount);
+                });
+    }
+
+    public Mono<Void> deleteDiscount(Long id){
+        return discountRepository.deleteById(id);
     }
 }
-

@@ -18,6 +18,7 @@
     <module>saga-orchestrator</module>
       <module>notification-service</module>
       <module>kafka-common</module>
+    <module>product-service</module>
   </modules>
 
   <properties>

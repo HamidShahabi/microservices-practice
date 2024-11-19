@@ -1,35 +1,25 @@
-# api-gateway/src/main/resources/application.yml
 server:
-  port: 8085
+  port: 8080
 
 spring:
   cloud:
     gateway:
       routes:
-        - id: saga-orchestrator
-          uri: http://localhost:8080
-          predicates:
-            - Path=/saga/**
-        - id: order-service
+        - id: product-service
           uri: http://localhost:8081
           predicates:
-            - Path=/orders/**
-        - id: payment-service
+            - Path=/api/products/**
+        - id: discount-service
           uri: http://localhost:8082
           predicates:
-            - Path=/payments/**
-        - id: inventory-service
+            - Path=/api/discounts/**
+        - id: order-service
           uri: http://localhost:8083
           predicates:
-            - Path=/inventory/**
-        - id: discount-service
-          uri: http://localhost:8084
-          predicates:
-            - Path=/discounts/**
-
-
+            - Path=/api/orders/**
+  main:
+    allow-bean-definition-overriding: true
 
 logging:
   level:
-    org.springframework.cloud.gateway: DEBUG
-    org.springframework.web: DEBUG
+    org.springframework: INFO

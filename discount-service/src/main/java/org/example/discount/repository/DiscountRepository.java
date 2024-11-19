@@ -1,7 +1,11 @@
 package org.example.discount.repository;
 
-import org.example.discount.entity.Discount;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
+import org.springframework.stereotype.Repository;
+import org.example.discount.model.Discount;
+import reactor.core.publisher.Mono;
 
-public interface DiscountRepository extends JpaRepository<Discount, String> {
+@Repository
+public interface DiscountRepository extends ReactiveCrudRepository<Discount, Long> {
+    Mono<Discount> findByCode(String code);
 }

@@ -1,11 +1,13 @@
 server:
-  port: 8082
+  port: 8081
 
 spring:
   r2dbc:
     url: r2dbc:postgresql://localhost:5432/hibernateDemoDB
     username: postgres
     password: hamidreza80
+    schema-generation:
+      create-schemas: always
   datasource:
     url: jdbc:postgresql://localhost:5432/hibernateDemoDB
     username: postgres

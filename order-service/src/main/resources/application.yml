@@ -1,28 +1,23 @@
-# order-service/src/main/resources/application.yml
 server:
-  port: 8081
+  port: 8083
 
 spring:
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/hibernateDemoDB
+    username: postgres
+    password: hamidreza80
   datasource:
     url: jdbc:postgresql://localhost:5432/hibernateDemoDB
     username: postgres
     password: hamidreza80
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-  kafka:
-    bootstrap-servers: localhost:9092
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+  main:
+    allow-bean-definition-overriding: true
 
-  h2:
-    console:
-      enabled: false
+product-service:
+  url: http://localhost:8081/api/products
+
+discount-service:
+  url: http://localhost:8082/api/discounts
 
 logging:
   level:

@@ -1,36 +1,28 @@
 package org.example.order.controller;
 
-import org.example.order.entity.Order;
-import org.example.order.service.OrderService;
-import org.springframework.http.ResponseEntity;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.example.order.model.Order;
+import org.example.order.service.OrderService;
+import org.example.order.dto.OrderRequest;
+import reactor.core.publisher.Mono;
+
 
 @RestController
-@RequestMapping("/orders")
+@RequestMapping("/api/orders")
 public class OrderController {
+    private final OrderService orderService;
 
-    private final OrderService service;
-
-    public OrderController(OrderService service) {
-        this.service = service;
+    public OrderController(OrderService orderService){
+        this.orderService = orderService;
     }
 
     @PostMapping
-    public Order createOrder(@RequestBody Order order) {
-        return service.createOrder(order);
+    @ResponseStatus(HttpStatus.CREATED)
+    public Mono<Order> createOrder(@Valid @RequestBody OrderRequest orderRequest){
+        return orderService.createOrder(orderRequest);
     }
 
-    @PutMapping("/{orderId}/status")
-    public ResponseEntity<String> updateOrderStatus(
-            @PathVariable String orderId,
-            @RequestParam String status) {
-        service.updateOrderStatus(orderId, status);
-        return ResponseEntity.ok("Order status updated to " + status);
-    }
-
-    @GetMapping("/{orderId}")
-    public Order getOrderById(@PathVariable String orderId) {
-        return service.getOrderById(orderId);
-    }
+    // Additional endpoints like getOrderById, getAllOrders etc.
 }
-

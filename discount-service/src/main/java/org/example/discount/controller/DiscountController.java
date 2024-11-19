@@ -1,38 +1,52 @@
 package org.example.discount.controller;
 
-import org.example.discount.entity.Discount;
-import org.example.discount.service.DiscountService;
-import org.springframework.http.ResponseEntity;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.example.discount.model.Discount;
+import org.example.discount.service.DiscountService;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 
 @RestController
-@RequestMapping("/discounts")
+@RequestMapping("/api/discounts")
 public class DiscountController {
+    private final DiscountService discountService;
 
-    private final DiscountService service;
-
-    public DiscountController(DiscountService service) {
-        this.service = service;
+    public DiscountController(DiscountService discountService){
+        this.discountService = discountService;
     }
 
-    @GetMapping("/{discountCode}")
-    public Discount getDiscount(@PathVariable String discountCode) {
-        return service.getDiscount(discountCode);
+    @GetMapping
+    public Flux<Discount> getAllDiscounts(){
+        return discountService.getAllDiscounts();
     }
 
-    @GetMapping("/{discountCode}/isActive")
-    public boolean isDiscountActive(@PathVariable String discountCode) {
-        return service.isDiscountActive(discountCode);
+    @GetMapping("/{id}")
+    public Mono<Discount> getDiscountById(@PathVariable Long id){
+        return discountService.getDiscountById(id);
+    }
+
+    @GetMapping("/code/{code}")
+    public Mono<Discount> getDiscountByCode(@PathVariable String code){
+        return discountService.getDiscountByCode(code);
     }
 
     @PostMapping
-    public Discount addDiscount(@RequestBody Discount discount) {
-        return service.addDiscount(discount);
+    @ResponseStatus(HttpStatus.CREATED)
+    public Mono<Discount> createDiscount(@Valid @RequestBody Discount discount){
+        return discountService.createDiscount(discount);
     }
 
-    @PutMapping("/{discountCode}/deactivate")
-    public ResponseEntity<String> deactivateDiscount(@PathVariable String discountCode) {
-        service.deactivateDiscount(discountCode);
-        return ResponseEntity.ok("Discount deactivated successfully");
+    @PutMapping("/{id}")
+    public Mono<Discount> updateDiscount(@PathVariable Long id, @Valid @RequestBody Discount discount){
+        return discountService.updateDiscount(id, discount);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public Mono<Void> deleteDiscount(@PathVariable Long id){
+        return discountService.deleteDiscount(id);
     }
 }
